@@ -1,0 +1,9 @@
+Setting Videos
+https://www.youtube.com/watch?v=joKUEJ0bqhM
+https://www.youtube.com/watch?v=3cxal8JAjlY
+https://www.youtube.com/watch?v=66RT1AXx_Zw
+
+Saving model and discussions:
+https://pytorch.org/tutorials/advanced/static_quantization_tutorial.html
+https://discuss.pytorch.org/t/saving-quantized-model/104998/6
+https://github.com/pytorch/pytorch/issues/28331
