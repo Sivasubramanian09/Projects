@@ -1,0 +1,112 @@
+Deep Residual Learning For Image Recognition
+
+- Abstract :
+	1.Deeper Residual are more difficult to train. So there comes Residual learning framework to ease the training.
+	2.Residual Network can have a depth up to 152 layers - which is 8x deeper than VGG nets
+	3.Won 1st in ILSVRC 2015 Classification Task. 
+	4.1st place in ImageNet Detection, ImageNet localization, COCO detection and COCO segmentation
+
+- Introduction :
+	 
+	1.Deep neural networks has lot of problems in image classification.
+	2.A model with more layers have less training error and testing error
+	3.One of the reason for this problem is Exploding/Vanishing Gradient Problem.
+	4.There also occurs an degrading problem, where accuracy also gets affected.
+	5.So in this paper we address this problem by introducing the residual learning framework.
+	6.changed the mapping to F(x) + x , nothing but adding the identity mapping.
+	7.This formula with shortcut connections, that is skipping one or more layers.
+	8.In our case the shortcut connection simply perform identity mapping, and their outputs are added to the outputs of the stacked layers.
+	9.The entire network can be still be trained end-to-end by SGD with backpropagations.
+	10.The Residual Networks are:
+		- Easy to optimize , but counterpart "plain" nets exhibit higher training error when depth increases.
+		- Easily enjoys the accuracy gains from greatly increased depth.
+	11.The model executed on ImageNet dataset has 152 layers
+	12.This evidence shows that the residual learning is generic, and we expect that it is applicable in other vision and non-vision problems.
+
+
+- Related Work:
+	1. VLAD - Vector of locally aggregated Descriptors.
+		- What is descriptors?
+			- the features in the image which describes it, Example: shape, Boundary, region - color, texture . All these together can identity the image .
+
+		Bag of words:
+			-Method used to extract the features.
+			-From vocabulary(words in sentences) , we come up with histogram(occurrences of the word) ,Similarly it is done with images - that is different parts of the images are broken down and we find the occurrences of the image.
+			-Used for image retrieval(getting the data back while searching) and image classification.
+			-Here , it pairs the key points and get the reference.
+			-Each image is represented as vector, Z = wini, w is the fixed weight of that image and n is the number of occurrences.
+
+			-the query image and the image is checked through cosine similarity or the dot product and sort it and highest is the correct image.
+			- i. e, L2 normalization is equivalent to measuring Euclidean distance. for vectors a and q , ||z-q||^2 = 2(1- Z^Tq)
+
+			- all the images have the visual words, so when the query image is asked , we have the visual words in that and we have all the images in an repository, So it checks whether all the visual words are present in each image and if yes the image is shown
+
+
+
+		Extension of Bag of Words - VLAD:
+			- This algorithm gives the vector per visual word.
+			- Instead of a scalar value this gives the residual vector.
+
+	  2. For Vector Quantization encoding residual vectors is shown to be more effective than encoding original vectors.
+
+
+- Deep residual Learning
+
+	- Identity Mapping by shortcuts:
+		1. Building block defined as, y = f(xi(wi)) + x
+			Here, x and y are the input and output vectors of the layers considered. The function f(xi(wi)) represents the residual mapping to be learned.
+
+
+	- Architectures
+	  -Plain Network:
+		1.Convolution layers basically have 3x3 because;
+			i) For same output feature map size, the layers have the same number of filters.
+		       ii) If the feature map size is halved, the number of filters is doubled, so as to preserve the time complexity per layer.
+		2.We perform down sampling directly by convolutional layers that have a stride of 2.
+		3.Networks ends with 1000-way fully connected layer with SoftMax.
+		4.34-layer Resnet has 3.6 billion FLOPs(floating point operations per second.) which is just 18% of VGG-19
+			FLOPs - describe how many operations are required to run a single instance of a given model.
+
+	 -Residual Network:
+		1. We insert the shortcut connections to make network residual version.
+		2.The identity shortcuts can be directly used when the input and output are same dimensions.
+		3.When dimensions increases(dotted lines),
+			we consider 2 points:
+				i) The shortcut still performs identity mapping, with extra zero entries padded for increasing dimensions.
+			       ii) The Projection shortcut is used to match dimensions (done by 1x1 conv).
+		4.For Both , when the short cuts go across feature maps of two sizes, they performed with stride of 2.
+
+
+
+- Experiments
+	-ImageNet Classification
+		- The Evaluation was done in the dataset consists of 1000 classes. 
+		- The Models are trained on the 1.28 million training images, and evaluated on the 50k validation images.
+
+		- Plain Networks
+			-Evaluated 18-layer and 34-layer plain nets.
+			-The 18-layer plain net is of a similar form
+			-The deeper layer has high validation error than the 18 layer network.
+			-The Batch normalization was carried out to overcome the overfitting problem. 
+			-The deep layers have low convergence rates, which impact the reducing the training error.
+
+		- Residual Networks
+			-The Base line are same as for plain nets, except the shortcut connection is added to each pair of 3x3 filters. 
+			-In first comparison, we use identity mapping for all shortcuts and zero padding for increasing dimensions.
+			-The situation was reversed, the 34-layer ResNet is better then 18-layer ResNet.
+			-34-layer has lower training error and is generalizable to the validation data.
+			-This indicates that degradation problem is well addressed and we manage to obtain high accuracy gains.
+				
+			-The 18-layer plain/residual nets are comparably accurate, but the 18-layer ResNet converges faster.
+			-Identity shortcuts are particularly important for not increasing the complexity of the bottleneck architectures.
+
+		- Deeper Bottleneck Architectures(Used for 50+ layers):
+			- Here, for each residual function F, we use a stack of 3 layers instead of 2, those are (1x1 , 3x3, 1x1) convolutions, 
+				- where 1x1 layers are responsible for reducing and then increasing (restoring) the dimensions.
+
+			- But both the designs have same time complexity.
+
+
+
+	
+  
